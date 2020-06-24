@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 
 use App\Konsumen;
-use Illuminate\Http\Request;
 use Validator;
 use DataTables;
 
@@ -43,8 +43,11 @@ class KonsumenController extends Controller
 
     public function create()
     {
+
+      //  dd(Konsumen::get());
+       // die();
         $data = [
-            'action'=>route('konsumen.store'),
+            'action' => route('konsumen.store'),
             'params' => 'Tambah',
             'method' => method_field('post'),
             'konsumen' => '',
@@ -76,8 +79,8 @@ class KonsumenController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        Konsumen::created($request->all());
-        return response()->json(['success' =>'Data berhasil di simpan']);
+        Konsumen::create($request->all());
+        return response()->json(['success' => 'Data berhasil di simpan']);
     }
 
     /**
@@ -101,7 +104,7 @@ class KonsumenController extends Controller
     {
         $r = Konsumen::findOrFail($id);
         $data = [
-            'action'=>route('konsumen.upate'),
+            'action' => route('konsumen.upate'),
             'params' => 'edit',
             'method' => method_field('put'),
             'konsumen' => $r->konsumen,
@@ -135,10 +138,8 @@ class KonsumenController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        $konsumen =  new Konsumen();
-        $konsumen->create($request->all());
-        return response()->json(['success' =>'Data berhasil di simpan']);
-
+        Konsumen::create($request->all());
+        return response()->json(['success' => 'Data berhasil di simpan']);
     }
 
     /**
