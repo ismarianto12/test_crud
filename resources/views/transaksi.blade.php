@@ -55,12 +55,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>konsumen</th>
-                            <th>jkendaraan</th>
-                            <th>n_polisi</th>
-                            <th>tgl_lahir</th>
-                            <th>jk</th>
-                            <th>no_hp </th>
+                            <th>No. Polisi </th>
+                            <th>Tgl Transaksi</th>
+                            <th>Waktu Masuk</th>
+                            <th>Waktu Keluar</th>
+                            <th>Biaya</th>
                             <th>Action</th>
                         </tr>
                     </thead>
