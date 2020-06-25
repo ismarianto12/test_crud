@@ -11,6 +11,7 @@
 |
 */
 
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -21,4 +22,4 @@ Route::get('/home','HomeController@index')->name('home');
 Route::Resource('konsumen', 'KonsumenController');
 Route::get('konsumen/api/data', 'KonsumenController@api')->name('konsumen.api.data');
 Route::Resource('transaksi', 'TransaksiController');
-Route::get('transaksi/api', 'KonsumenController@api')->name('transaksi.api');
+Route::get('transaksi/api/data', 'TransaksiController@api')->name('transaksi.api.data');

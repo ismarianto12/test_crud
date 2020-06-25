@@ -29,14 +29,13 @@ class TransaksiController extends Controller
 
     public function api()
     {
-        $fdata = Transaksi::get();
+        $fdata = Transaksi::with(['konsumen:konsumen'])->get();
         return Datatables::of($fdata)
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" to="' . route('konsumen.edit', $data->id) . '" class="edit btn btn-primary btn-sm">Edit</button>';
                 $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
                 return $button;
             })
-            ->addColumn('anggota_rapat', $fdata->count())
             ->addIndexColumn()
             ->rawColumns(['action'])
             ->make(true);
@@ -45,14 +44,16 @@ class TransaksiController extends Controller
     public function create()
     {
 
-
         $data = [
-            'konsumen' => '',
-            'jkendaraan' => '',
-            'n_polisi' => '',
-            'tgl_lahir' => '',
-            'jk' => '',
-            'no_hp' => ''
+            'action' => route('konsumen.store'),
+            'method' => method_field('post'),
+            'params' => 'tambah',
+            'konsumen_id' => '',
+            'nomor_polisi' => '',
+            'masuk' => '',
+            'keluar' => '',
+            'biaya' => '',
+
         ];
         return view('transaksi_form', $data);
     }
@@ -66,29 +67,29 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $error =   Validator::make($request->all(), [
-            'konsumen' => 'required',
-            'jkendaraan' => 'required',
-            'n_polisi' => 'required',
-            'tgl_lahir' => 'required',
-            'jk' => 'required',
-            'no_hp' => 'required'
+            'konsumen_id' => 'required',
+            'nomor_polisi' => 'required',
+            'masuk' => 'required',
+            'keluar' => 'required',
+            'biaya' => 'required',
         ]);
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        Konsumen::created($request->all());
+        Transaksi::created($request->all());
         return response()->json(['errors' => $error->errors()->all()]);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+     $r = Transaksi::finOrFaild($id);
+     $data = [
+        'konsumen_id' => $r->konsumen_id,
+        'nomor_polisi' => $r->nomor_polisi,
+        'masuk' => $r->masuk,
+        'keluar' => $r->keluar,
+        'biaya' => $r->biaya,
+    ];
+    return view('transaksi_detail', $data);
     }
 
     /**
@@ -99,14 +100,16 @@ class TransaksiController extends Controller
      */
     public function edit($id)
     {
-        $r = Konsumen::findOrFail($id);
+        $r = Transaksi::findOrFail($id);
         $data = [
-            'konsumen' => $r->konsumen,
-            'jkendaraan' => $r->jkendaraan,
-            'n_polisi' => $r->n_polisi,
-            'tgl_lahir' => $r->tgl_lahir,
-            'jk' => $r->jk,
-            'no_hp' => $r->no_hp
+            'action' => route('konsumen.update',$id),
+            'params' => 'edit',
+            'method' => method_field('put'),
+            'konsumen_id' => $r->konsumen_id,
+            'nomor_polisi' => $r->nomor_polisi,
+            'masuk' => $r->masuk,
+            'keluar' => $r->keluar,
+            'biaya' => $r->biaya,
         ];
         return view('transaksi_form', $data);
     }
@@ -120,20 +123,18 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $error =   Validator::make($request->all(), [
-            'konsumen' => 'required',
-            'jkendaraan' => 'required',
-            'n_polisi' => 'required',
-            'tgl_lahir' => 'required',
-            'jk' => 'required',
-            'no_hp' => 'required'
+            'konsumen_id' => 'required',
+            'nomor_polisi' => 'required',
+            'masuk' => 'required',
+            'keluar' => 'required',
+            'biaya' => 'required',
         ]);
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        Konsumen::created($request->all());
-        return response()->json(['errors' => $error->errors()->all()]);
+        Transaksi::find($id)->update($request->all());
+        return response()->json(['errors' => 'Data transaksi berhasil di update']);
     }
 
     /**
@@ -144,7 +145,7 @@ class TransaksiController extends Controller
      */
     public function destroy(request $request)
     {
-        $data = Konsumen::FindOrFail($request->id);
+        $data = Transaksi::FindOrFail($request->id);
         $data->delete();
         return response()->json(['success' => 'data berhasil di hapus']);
     }

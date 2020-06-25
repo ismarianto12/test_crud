@@ -10,7 +10,7 @@
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Konsumen</label>
                 <div class="col-sm-10">
-                    <input type="text" name="konsumen" class="form-control" id="inputPassword3"
+                    <input type="text" name="konsumen" class="konsumen form-control" id="inputPassword3"
                         value="{{ $konsumen_id }}" placeholder="Nama Divisi">
                 </div>
             </div>
@@ -26,40 +26,28 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Polisi</label>
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Jam masuk kendaraan</label>
                 <div class="col-sm-10">
-                    <input type="text" name="n_polisi" class="form-control" id="inputPassword3"
-                        value="{{ $n_polisi }}" placeholder="Nama Divisi">
+                    <input type="text" name="masuk" class="form-control" id="inputPassword3" value="{{ $masuk }}"
+                        placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Tlg Lahir</label>
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Jam Keluar Kendaraan</label>
                 <div class="col-sm-10">
-                    <input type="text" name="tgl_lahir" class="form-control" id="inputPassword3"
-                        value="{{ $tgl_lahir }}" placeholder="Nama Divisi">
+                    <input type="text" name="keluar" class="form-control" id="inputPassword3" value="{{ $keluar }}"
+                        placeholder="jam keluar kendaraan">
                 </div>
             </div>
         </div>
-         <div class="card-body">
-            <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">jenis Kelamin</label>
-                <div class="col-sm-10">
-                   <select name="jk" class="form-control">
-                    <option value="L">laki-laki</option>
-                    <option value="L">Perempuan</option>
-                </select>
-                </div>
-            </div>
-        </div>
-
         <div class="card-body">
             <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Hp</label>
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Jumlah Biaya</label>
                 <div class="col-sm-10">
-                    <input type="text" name="no_hp" class="form-control" id="inputPassword3"
-                        value="{{ $no_hp }}" placeholder="Nama Divisi">
+                    <input type="text" name="biaya" class="form-control" id="inputPassword3" value="{{ $biaya }}"
+                        placeholder="Jumlah Biaya ... ">
                 </div>
             </div>
         </div>
@@ -76,7 +64,7 @@
             $('.show_form').hide().slideUp().fast();
             $('#dtable').DataTable().ajax.reload();
         });
-         $('#simpan').on('submit', function(e) {
+        $('#simpan').on('submit', function(e) {
             e.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
@@ -108,6 +96,136 @@
                         alert(error)
                     }
                 });
-            })
-        })
+
+            });
+        });
+
+
+
+//ss
+    $(function() {
+        $('.konsumen').on('click',function(){
+                $('#konsummen_modal').modal('show');
+            });
+        });
+</script>
+
+
+{{-- modal --}}
+
+<div class="modal fade" id="konsummen_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Data Konsumen</h3>
+                <hr />
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Polisi </th>
+                            <th> Nama konsumen</th>
+                            <th>Tgl Transaksi</th>
+                            <th>Waktu Masuk</th>
+                            <th>Waktu Keluar</th>
+                            <th>Biaya</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{-- javascript data --}}
+<script>
+    $(function(){
+        $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
+            return {
+                "iStart": oSettings._iDisplayStart,
+                "iEnd": oSettings.fnDisplayEnd(),
+                "iLength": oSettings._iDisplayLength,
+                "iTotal": oSettings.fnRecordsTotal(),
+                "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                "iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+            };
+        };
+        $('#example2').DataTable({
+            initComplete: function() {
+                var api = this.api();
+                $('#datatables input')
+                .off('.DT')
+                .on('keyup.DT', function(e) {
+                    if (e.keyCode == 13) {
+                        api.search(this.value).draw();
+                    }
+                });
+            },
+            oLanguage: {
+                sProcessing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>'
+
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ Url('konsumen/api/data') }}",
+            },
+            columns: [
+            {
+                data: 'DT_RowIndex',
+            },
+            {
+                data : 'konsumen',
+            },
+            {
+                data : 'jkendaraan',
+            },
+            {
+                data : 'n_polisi',
+            },
+            {
+                data : 'tgl_lahir',
+            },
+            {
+                data: "no_hp",
+            },
+            {
+                data : 'jk',
+                orderable :false,
+                render: function (data, type, row) {
+                    if (data == "L") {
+                        return '<span class="btn btn-success btn-sm"><i class="fa fa-check"></i>Laki Laki</span>';
+                    }else
+                    if (data == "P") {
+                        return '<span class="btn btn-warning btn-sm">Perempuan</span>';
+                    }
+                }
+            },
+            {
+                data : 'action',
+                orderable :false,
+            }
+            ],
+            'responsive' : true,
+
+        });
+
+
+    })
 </script>

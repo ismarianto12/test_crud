@@ -9,11 +9,6 @@ use DataTables;
 
 class KonsumenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $data =  [];
@@ -35,7 +30,6 @@ class KonsumenController extends Controller
                 $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
                 return $button;
             })
-            ->addColumn('anggota_rapat', $fdata->count())
             ->addIndexColumn()
             ->rawColumns(['action'])
             ->make(true);
@@ -43,9 +37,6 @@ class KonsumenController extends Controller
 
     public function create()
     {
-
-      //  dd(Konsumen::get());
-       // die();
         $data = [
             'action' => route('konsumen.store'),
             'params' => 'Tambah',
@@ -68,7 +59,7 @@ class KonsumenController extends Controller
      */
     public function store(Request $request)
     {
-        $error =   Validator::make($request->all(), [
+        $error = Validator::make($request->all(), [
             'konsumen' => 'required',
             'jkendaraan' => 'required',
             'n_polisi' => 'required',

@@ -44,7 +44,7 @@
                 });
             </script>
             <div class="card-body">
-                <button id="load_form" class="btn btn-info" load="<?= route('konsumen.create') ?>"><i
+                <button id="load_form" class="btn btn-info" load="{{ route('transaksi.create') }}"><i
                         class="icon fa fa-add"></i>Tambah </button>
                 <br />
                 <div class="show_form"></div>
@@ -56,6 +56,7 @@
                         <tr>
                             <th>#</th>
                             <th>No. Polisi </th>
+                            <th> Nama konsumen</th>
                             <th>Tgl Transaksi</th>
                             <th>Waktu Masuk</th>
                             <th>Waktu Keluar</th>
@@ -100,35 +101,29 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ Url('konsumen/api') }}",
+                        url: "{{ Url('transaksi/api/data') }}",
                     },
                     columns: [
                     {
                         data: 'DT_RowIndex',
                     },
                     {
-                        data : 'konsumen',
+                        data : 'konsumen.konsumen',
                     },
                     {
-                        data : 'jkendaraan',
+                        data : 'created_at',
                     },
                     {
-                        data : 'n_polisi',
+                        data : 'nomor_polisi',
                     },
                     {
-                        data : 'tgl_lahir',
+                        data : 'masuk',
                     },
                     {
-                        data : 'status',
-                        orderable :false,
-                        render: function (data, type, row) {
-                            if (data == "L") {
-                                return '<span class="btn btn-success btn-sm"><i class="fa fa-check"></i>Laki Laki</span>';
-                            }else
-                            if (data == "P") {
-                                return '<span class="btn btn-warning btn-sm">Perempuan</span>';
-                            }
-                        }
+                        data : 'keluar',
+                    },
+                    {
+                        data : 'biaya',
                     },
                     {
                         data : 'action',
@@ -136,7 +131,6 @@
                     }
                     ],
                     'responsive' : true,
-
                 });
 
                 // $('.print_action').click(function(){
