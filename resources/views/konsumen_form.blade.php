@@ -10,8 +10,8 @@
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Konsumen</label>
                 <div class="col-sm-10">
-                    <input type="text" name="konsumen" class="form-control" id="inputPassword3"
-                        value="{{ $konsumen }}" placeholder="Nama Divisi">
+                    <input type="text" name="konsumen" class="form-control" id="inputPassword3" value="{{ $konsumen }}"
+                        placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
@@ -28,8 +28,8 @@
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Polisi</label>
                 <div class="col-sm-10">
-                    <input type="text" name="n_polisi" class="form-control" id="inputPassword3"
-                        value="{{ $n_polisi }}" placeholder="Nama Divisi">
+                    <input type="text" name="n_polisi" class="form-control" id="inputPassword3" value="{{ $n_polisi }}"
+                        placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
@@ -42,14 +42,19 @@
                 </div>
             </div>
         </div>
-         <div class="card-body">
+        <div class="card-body">
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">jenis Kelamin</label>
                 <div class="col-sm-10">
-                   <select name="jk" class="form-control">
-                    <option value="L">laki-laki</option>
-                    <option value="L">Perempuan</option>
-                </select>
+                    <select name="jk" class="form-control">
+                        @php
+                        $lk = ['L'=>'Laki-laki','P'=>'Perempuan'];
+                        @endphp
+                         @foreach ($lk as $key => $value)
+                            @php  $jdata = ($jk == $key) ? "selected" : ""  @endphp
+                           <option value="{{ $key }}" {{ $jdata }}>{{ $value }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
@@ -58,8 +63,8 @@
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Hp</label>
                 <div class="col-sm-10">
-                    <input type="text" name="no_hp" class="form-control" id="inputPassword3"
-                        value="{{ $no_hp }}" placeholder="Nama Divisi">
+                    <input type="text" name="no_hp" class="form-control" id="inputPassword3" value="{{ $no_hp }}"
+                        placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
@@ -74,7 +79,7 @@
     $(function() {
         $('#cancel').on('click', function() {
             $('.show_form').hide().slideUp().fast();
-            $('#dtable').DataTable().ajax.reload();
+            $('#example2').DataTable().ajax.reload();
         });
          $('#simpan').on('submit', function(e) {
             e.preventDefault();
@@ -98,14 +103,14 @@
                         } else if (data.success) {
                             html = '<div class="alert alert-success">' + data.success + '</div>';
                             //$('#sample_form')[0].reset();
-                            $('#dtable').DataTable().ajax.reload();
+                            $('#example2').DataTable().ajax.reload();
                             $('.show_form').hide().slideUp();
                         }
                         $('#form_result').html(html);
                     },
                     error: function(xhr, error, status) {
                         // swal('warning', 'Batal ', 'error');
-                        alert(error)
+                        alert('ada error parsing data : '+error)
                     }
                 });
             })

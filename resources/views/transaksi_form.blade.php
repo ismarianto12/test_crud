@@ -11,16 +11,16 @@
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Konsumen</label>
                 <div class="col-sm-10">
                     <input type="text" name="konsumen" class="form-control" id="inputPassword3"
-                        value="{{ $konsumen }}" placeholder="Nama Divisi">
+                        value="{{ $konsumen_id }}" placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Jenis Kendaraan</label>
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Polisi</label>
                 <div class="col-sm-10">
                     <input type="text" name="jkendaraan" class="form-control" id="inputPassword3"
-                        value="{{ $jkendaraan }}" placeholder="Nama Divisi">
+                        value="{{ $nomor_polisi }}" placeholder="Nomor Polisi">
                 </div>
             </div>
         </div>

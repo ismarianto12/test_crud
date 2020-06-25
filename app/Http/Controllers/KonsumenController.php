@@ -104,7 +104,7 @@ class KonsumenController extends Controller
     {
         $r = Konsumen::findOrFail($id);
         $data = [
-            'action' => route('konsumen.upate'),
+            'action' => route('konsumen.update',$id),
             'params' => 'edit',
             'method' => method_field('put'),
             'konsumen' => $r->konsumen,
@@ -127,7 +127,7 @@ class KonsumenController extends Controller
     public function update(Request $request, $id)
     {
 
-        $error =   Validator::make($request->all(), [
+        $error =  Validator::make($request->all(), [
             'konsumen' => 'required',
             'jkendaraan' => 'required',
             'n_polisi' => 'required',
@@ -138,7 +138,7 @@ class KonsumenController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        Konsumen::create($request->all());
+        Konsumen::find($id)->update($request->all());
         return response()->json(['success' => 'Data berhasil di simpan']);
     }
 

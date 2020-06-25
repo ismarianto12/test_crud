@@ -8,14 +8,4 @@ class Konsumen extends Model
 {
     protected $table = 'konsumen';
     protected $guarded = [];
-    // protected $fillable = [
-    //     'konsumen',
-    //     'jkendaraan',
-    //     'n_polisi',
-    //     'tgl_lahir',
-    //     'jk',
-    //     'no_hp',
-
-    // ];
-
 }

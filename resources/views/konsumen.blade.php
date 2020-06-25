@@ -45,33 +45,33 @@
             </script>
             <div class="card-body">
                 <button id="load_form" class="btn btn-info" load="<?= route('konsumen.create') ?>"><i
-                        class="icon fa fa-add"></i>Tambah </button>
-                <br />
-                <div class="show_form"></div>
-                <hr />
+                    class="icon fa fa-add"></i>Tambah </button>
+                    <br />
+                    <div class="show_form"></div>
+                    <hr />
 
-                <div id="form_result"></div>
-                <table id="example2" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>konsumen</th>
-                            <th>jkendaraan</th>
-                            <th>n_polisi</th>
-                            <th>tgl_lahir</th>
-                            <th>jk</th>
-                            <th>no_hp </th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                    <div id="form_result"></div>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Konsumen</th>
+                                <th>Jenis Kendaraan</th>
+                                <th>Nomor Polisi</th>
+                                <th>Tanggal lahir</th>
+                                <th>Jenis Kelamin</th>
+                                <th>No hp </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        $(function(){
+        <script>
+            $(function(){
                 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
                     return {
                         "iStart": oSettings._iDisplayStart,
@@ -101,7 +101,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ Url('konsumen/api') }}",
+                        url: "{{ Url('konsumen/api/data') }}",
                     },
                     columns: [
                     {
@@ -120,7 +120,10 @@
                         data : 'tgl_lahir',
                     },
                     {
-                        data : 'status',
+                        data: "no_hp",
+                    },
+                    {
+                        data : 'jk',
                         orderable :false,
                         render: function (data, type, row) {
                             if (data == "L") {
@@ -159,26 +162,26 @@
                                 });
 
                             })
-    </script>
-    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="judul"></div>
-                    <hr />
-                    <div id="cetak_data"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endsection
+                        </script>
+                        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="judul"></div>
+                                    <hr />
+                                    <div id="cetak_data"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endsection
