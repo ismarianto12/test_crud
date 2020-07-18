@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Konsumen;
-use App\Transaksi;
+use App\Harga;
 use Illuminate\Http\Request;
+use App\Login;
+
 use Validator;
 use DataTables;
 
-class TransaksiController extends Controller
+class TmhargaController  extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public $view = 'transaksi';
+    public $view = 'tmharga';
 
     public function index()
     {
         $data =  [];
-        return view($this->view.'.transaksi', compact('data'));
+        return view($this->view . '.tmharga', compact('data'));
     }
 
     /**
@@ -31,16 +27,20 @@ class TransaksiController extends Controller
 
     public function api()
     {
-        $fdata = Transaksi::with(['konsumen:konsumen'])->get();
+        $fdata = Harga::with(['login:name,email'])->get();
         return Datatables::of($fdata)
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" to="' . route('konsumen.edit', $data->id) . '" class="edit btn btn-primary btn-sm">Edit</button>';
                 $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
                 return $button;
             })
+            ->editColumn('action_select', function ($data) {
+                $s = '<button type="button" name="select" data="' . $data->id . '" class="select btn btn-primary btn-sm">Pilih.</button>';
+                return $s;
+            })
             ->addIndexColumn()
-            ->rawColumns(['action'])
-            ->make(true);
+            ->rawColumns(['action','action_select'])
+            ->toJson();
     }
 
     public function create()
@@ -50,14 +50,12 @@ class TransaksiController extends Controller
             'action' => route('konsumen.store'),
             'method' => method_field('post'),
             'params' => 'tambah',
-            'konsumen_id' => '',
-            'nomor_polisi' => '',
-            'masuk' => '',
-            'keluar' => '',
-            'biaya' => '',
+            'harganm' => '',
+            'waktu' => '',
+            'user_id' => '',
 
         ];
-        return view($this->view.'.transaksi_form', $data);
+        return view($this->view . '.tmharga_form', $data);
     }
 
     /**
@@ -91,7 +89,7 @@ class TransaksiController extends Controller
             'keluar' => $r->keluar,
             'biaya' => $r->biaya,
         ];
-        return view($this->view.'.transaksi_detail', $data);
+        return view($this->view . '.tmharga_detail', $data);
     }
 
     /**
@@ -104,16 +102,13 @@ class TransaksiController extends Controller
     {
         $r = Transaksi::findOrFail($id);
         $data = [
-            'action' => route('konsumen.update', $id),
+            'action' => route('tmharga.update', $id),
             'params' => 'edit',
-            'method' => method_field('put'),
-            'konsumen_id' => $r->konsumen_id,
-            'nomor_polisi' => $r->nomor_polisi,
-            'masuk' => $r->masuk,
-            'keluar' => $r->keluar,
-            'biaya' => $r->biaya,
+            'harganm' => $r->harganm,
+            'waktu' => $r->waktu,
+            'user_id' => Auth::user()->id,
         ];
-        return view($this->view.'.transaksi_form', $data);
+        return view($this->view . '.tmharga_form', $data);
     }
 
     /**
@@ -126,16 +121,13 @@ class TransaksiController extends Controller
     public function update(Request $request, $id)
     {
         $error =   Validator::make($request->all(), [
-            'konsumen_id' => 'required',
-            'nomor_polisi' => 'required',
-            'masuk' => 'required',
-            'keluar' => 'required',
-            'biaya' => 'required',
+            'harganm' => 'required',
+            'waktu' => 'required',
         ]);
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        Transaksi::find($id)->update($request->all());
+        Harga::find($id)->update($request->all());
         return response()->json(['errors' => 'Data transaksi berhasil di update']);
     }
 
@@ -147,7 +139,7 @@ class TransaksiController extends Controller
      */
     public function destroy(request $request)
     {
-        $data = Transaksi::FindOrFail($request->id);
+        $data = Harga::FindOrFail($request->id);
         $data->delete();
         return response()->json(['success' => 'data berhasil di hapus']);
     }

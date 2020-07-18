@@ -97,6 +97,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ Url("harga") }}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Master Harga</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -162,6 +169,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
+                    <br />
+
+                        <hr />
+                     <tt>Anda akan keluar dari aplikasi ? </tt>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

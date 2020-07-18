@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 
 use App\Konsumen;
@@ -9,10 +10,12 @@ use DataTables;
 
 class KonsumenController extends Controller
 {
+    public $view = 'konsumen';
+
     public function index()
     {
         $data =  [];
-        return view('konsumen', compact('data'));
+        return view($this->view.'.konsumen', compact('data'));
     }
 
     /**
@@ -28,6 +31,10 @@ class KonsumenController extends Controller
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="edit" to="' . route('konsumen.edit', $data->id) . '" class="edit btn btn-primary btn-sm">Edit</button>';
                 $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
+                return $button;
+            })
+            ->addColumn('action_select', function ($data) {
+                $button = '<button type="button" name="select" data="' . $data->id . '" class="select btn btn-primary btn-sm">Pilih.</button>';
                 return $button;
             })
             ->addIndexColumn()
@@ -48,15 +55,9 @@ class KonsumenController extends Controller
             'jk' => '',
             'no_hp' => ''
         ];
-        return view('konsumen_form', $data);
+        return view($this->view.'.konsumen_form', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $error = Validator::make($request->all(), [
@@ -85,6 +86,16 @@ class KonsumenController extends Controller
         //
     }
 
+    public function get_detail(Request $request, $id)
+    {
+        $data = Konsumen::find($request->id)->get();
+        $response = [
+            'konsumen_id'=>$data->konsumen_id,
+            'konsumen'=>$data->konsumen
+        ];
+        return response()->json($response, 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -95,7 +106,7 @@ class KonsumenController extends Controller
     {
         $r = Konsumen::findOrFail($id);
         $data = [
-            'action' => route('konsumen.update',$id),
+            'action' => route('konsumen.update', $id),
             'params' => 'edit',
             'method' => method_field('put'),
             'konsumen' => $r->konsumen,
@@ -105,7 +116,7 @@ class KonsumenController extends Controller
             'jk' => $r->jk,
             'no_hp' => $r->no_hp
         ];
-        return view('konsumen_form', $data);
+        return view($this->view.'.konsumen_form', $data);
     }
 
     /**

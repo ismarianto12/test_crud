@@ -10,8 +10,9 @@
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Konsumen</label>
                 <div class="col-sm-10">
+                    <div id="id_konsumen"></div>
                     <input type="text" name="konsumen" class="konsumen form-control" id="inputPassword3"
-                        value="{{ $konsumen_id }}" placeholder="Nama Divisi">
+                    value="{{ $konsumen_id }}" placeholder="Nama Konsumen">
                 </div>
             </div>
         </div>
@@ -20,7 +21,7 @@
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Nomor Polisi</label>
                 <div class="col-sm-10">
                     <input type="text" name="jkendaraan" class="form-control" id="inputPassword3"
-                        value="{{ $nomor_polisi }}" placeholder="Nomor Polisi">
+                    value="{{ $nomor_polisi }}" placeholder="Nomor Polisi">
                 </div>
             </div>
         </div>
@@ -29,7 +30,7 @@
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Jam masuk kendaraan</label>
                 <div class="col-sm-10">
                     <input type="text" name="masuk" class="form-control" id="inputPassword3" value="{{ $masuk }}"
-                        placeholder="Nama Divisi">
+                    placeholder="Nama Divisi">
                 </div>
             </div>
         </div>
@@ -38,7 +39,7 @@
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Jam Keluar Kendaraan</label>
                 <div class="col-sm-10">
                     <input type="text" name="keluar" class="form-control" id="inputPassword3" value="{{ $keluar }}"
-                        placeholder="jam keluar kendaraan">
+                    placeholder="jam keluar kendaraan">
                 </div>
             </div>
         </div>
@@ -47,16 +48,15 @@
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Jumlah Biaya</label>
                 <div class="col-sm-10">
                     <input type="text" name="biaya" class="form-control" id="inputPassword3" value="{{ $biaya }}"
-                        placeholder="Jumlah Biaya ... ">
+                    placeholder="Jumlah Biaya ... ">
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
         <div class="card-footer">
             <button type="submit" id="simpan" class="btn btn-info">Simpan</button>
-    </form>
-    <button type="reset" id="cancel" class="btn btn-default float-right">Cancel</button>
-</div>
+        </form>
+        <button type="reset" id="cancel" class="btn btn-default float-right">Cancel</button>
+    </div>
 </div>
 <script>
     $(function() {
@@ -78,79 +78,74 @@
                 success: function(data) {
                     var html = '';
                     if (data.errors) {
-                        html = '<div class="alert alert-danger">';
-                            for (var count = 0; count < data.errors.length; count++) {
-                                html += '<p>' + data.errors[count] + '</p>';
-                            }
-                            html += '</div>';
-                        } else if (data.success) {
-                            html = '<div class="alert alert-success">' + data.success + '</div>';
-                            //$('#sample_form')[0].reset();
-                            $('#dtable').DataTable().ajax.reload();
-                            $('.show_form').hide().slideUp();
+                        html = '';
+                        for (var count = 0; count < data.errors.length; count++) {
+                            html += '<div class="alert alert-danger">' + data.errors[count] + '</div>';
                         }
-                        $('#form_result').html(html);
-                    },
-                    error: function(xhr, error, status) {
-                        // swal('warning', 'Batal ', 'error');
-                        alert(error)
+                        html += '';
+                    } else if (data.success) {
+                        html = '<div class="alert alert-success">' + data.success + '</div>';
+                        //$('#sample_form')[0].reset();
+                        $('#dtable').DataTable().ajax.reload();
+                        $('.show_form').hide().slideUp();
                     }
-                });
-
+                    $('#form_result').html(html);
+                },
+                error: function(xhr, error, status) {
+                    // swal('warning', 'Batal ', 'error');
+                    alert(error)
+                }
             });
+
         });
+    });
 
-
-
-//ss
+    //ss
     $(function() {
         $('.konsumen').on('click',function(){
-                $('#konsummen_modal').modal('show');
-            });
+            $('#konsummen_modal').modal('show');
         });
+    });
 </script>
 
 
 {{-- modal --}}
-
 <div class="modal fade" id="konsummen_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h3>Data Konsumen</h3>
-                <hr />
-                <table id="example2" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>No. Polisi </th>
-                            <th> Nama konsumen</th>
-                            <th>Tgl Transaksi</th>
-                            <th>Waktu Masuk</th>
-                            <th>Waktu Keluar</th>
-                            <th>Biaya</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check"></i> Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h3>Data Konsumen</h3>
+            <hr />
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>No. Polisi </th>
+                        <th> Nama konsumen</th>
+                        <th>Tgl Transaksi</th>
+                        <th>Waktu Masuk</th>
+                        <th>Waktu Keluar</th>
+                        <th>Biaya</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
-
-
+</div>
 
 {{-- javascript data --}}
 <script>
@@ -218,14 +213,11 @@
                 }
             },
             {
-                data : 'action',
-                orderable :false,
+                data : 'action_select'
             }
             ],
             'responsive' : true,
 
         });
-
-
     })
 </script>
